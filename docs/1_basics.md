@@ -83,8 +83,115 @@ pnpm dev
 
 in the console and this will start the live server for `vite+typescript`. 
 
-While the server is running you can type `o` in the console and this will open the project in your default browser.
+While the server is running you can type `o` in the console and this will open the project in your default browser. 
 
 ![alt text](image.png)
 
 Now that you have the server running, you can start coding.
+
+Before we get started, some information about typescript.
+
+It is a `transpiled` language. That means it will be compiled to javascript. More accurately anything we write in typescript will be `translated` to javascript. 
+
+It'll force us to write type safe code by using type annotations so that we can catch errors before they happen.
+
+> Somebody once told me that typescript is more of a vs code extension than a language.
+
+Enough chitchat, let's get on to business.
+
+# Type Annotation
+
+First make a new file named `annotations.ts` in the `src` folder.
+
+> every typescript file must end with `.ts` extension.
+
+Now, import it in the `main.ts` file.
+
+```ts {.line-numbers}
+import "./annotations.ts";
+```
+
+At the very top. don't touch anything else.
+
+Now, let's start coding. In the `annotations.ts` file let's log something.
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+console.log('helloooo!!!');
+```
+
+Start the server if it is not already running and open it in your browser.
+
+Now if you open the console in the browser you should see that `helloooo!!!` is printed in the console.
+
+And yes you can write normal javascript code but there'll be some catches.
+
+Now, let's talk about type annotations.
+
+Type annotations are used to tell typescript what the type of the variable is. 
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+let name: string = 'Rishat';
+
+console.log(name);
+
+```
+
+Here, I'm declaring a variable `name` and to tell typescript what type of variable it is I'm using the `:` symbol followed by the type of the variable.
+
+Then as ususal the assignment operator is used to assign a value to the variable.
+
+Now what is the benefit of this. Try to change the value of `name` to a number and see what happens.
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+let name: string = 'Rishat';
+
+console.log(name);
+
+name = 1;
+```
+
+You should see vs code red underline on the `name = 1;` line right away. 
+
+You can log the name variable in the console and see everything is running fine because it is translated into javascript but vs code will show you the error that `you cannot assign a number to a string variable.`
+
+This is help ful because now we can clearly see the type of the variable and we have to stick to it.
+
+> So, type script is manually turning a high level dynamic language into a statically typed language.
+
+Even though everything will run fine in the browser, it's a good idea to use type annotations to make your code more type safe while coding.
+
+There are other basic types like `number` and `boolean`.
+
+Let's try `number` now.
+
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+let age: number = 25;
+
+// age = 'Rishat';
+```
+
+This will also throw an error like before. 
+
+Type annotations has one handy ability. After annotating a variable you can now will now get all the methods that are available for that type. Just add a `.` operator after the variable name and you will be shown a list of all the methods that are available for that type only.
+
+But typescript is also a very smart language. It can `infer` the type of the variable based on the value that is assigned to it, even if you don't specify the type.
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+
+let isStudent = true;
+
+isStudent = 10;
+
+```
+
+Here I'm assigning a boolen value to the variable `isStudent` and look how I didn't specify the type but still there will be a error underline below the `isStudent = 10;` line telling you that you cannot assign a number to a boolean variable.
+
+And this is called `type inference`. It is a feature of typescript that allows us to infer the type of the variable.
+
+But this is not a good idea. It can also cause some weird errors. 
