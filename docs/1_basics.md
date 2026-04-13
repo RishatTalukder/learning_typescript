@@ -1,4 +1,4 @@
-# Typescript Fundamentals
+# Typescript Fundamentals Part 1
 
 I was doing a project and it was becomeing pretty big and as the variables started to get a bit out of hand, I thought there should be a better way to do it. Someone recommended Typescript. Now, believe it or not, I'm a total nob in javascript. So, why not challenge myself and learn Typescript and see if it's that good?
 
@@ -6,9 +6,13 @@ As always, I'm `Md. rishat Talukder`. Let's try to learn Typescript together.
 
 - [LinkedIn](https://www.linkedin.com/in/pro-programmer/)
 - [YouTube](http://www.youtube.com/@itvaya)
-- [gtihub](https://github.com/RishatTalukder/Machine-Learning-Zero-to-Hero)
+- [gtihub](https://github.com/RishatTalukder/learning_typescript)
 - [Gmail](talukderrishat2@gmail.com)
 - [discord](https://discord.gg/ZB495XggcF)
+
+**Pre-requisites**
+- Basic javascript knowledge
+- Basic Node project structure knowledge
 
 # The setup
 
@@ -195,3 +199,243 @@ Here I'm assigning a boolen value to the variable `isStudent` and look how I did
 And this is called `type inference`. It is a feature of typescript that allows us to infer the type of the variable.
 
 But this is not a good idea. It can also cause some weird errors. 
+
+Now, one last thing about typescript even though while development you can render with errors, but in production typescript will not compile your code until all the type errors are resolved.
+
+And if you cannot compile/build the code you cannot serve or deploy it.
+
+So, always remember to fic all the errors before building the code.
+
+## Union Types
+
+We know that we can specify the type of the variable but what if we want to specify `multiple types` for the variable.
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+
+let age: number | string = 25;
+
+age = '25';
+
+age = 10;
+```
+
+Here, using the `|` operator we can specify multiple types for the variable. We are actually saying that the variable can be of type `number` or `string`. `|` is a `or` operator for combining multiple types.
+
+> Try to assign a boolean value to the variable and see what happens. You shoud see an error.
+
+One cool thing about typescript is that not only that you can specify multiple types for the variable but you can specify `multiple values or variables` as types for the variable. This might seem confusing but let's say you have a request state variable.
+
+You can have `pending`, `resolved`, `rejected` as types for the variable.
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+
+let requestState: 'pending' | 'resolved' | 'rejected' = 'pending';
+
+requestState = 'resolved';
+
+requestState = 'rejected';
+
+requestState = 'something else';
+```
+
+Here, I'm specifying that the variable can be one of the three values. `pending`, `resolved`, `rejected` and if you try to assign something else to the variable you will get an error.
+
+And One weird thing about typescript is that you can also specify `any` type for the variable.
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+
+let age: any = 25;
+
+age = '25';
+
+age = 10;
+
+age = true;
+```
+
+> any is actually what it sounds like this will tell ts that this variable can be of any type. 
+
+This is almost like raw js. If you don't want typescript linting to complain about the type of the variable you can use `any` type.
+
+But be careful because using `any` type can cause a lot of problems. Because this one single variable can spread like wildfire. And before you knwo it every single variable in your code can become the `any` type.
+
+# Array Types
+
+Let's make a program to find a number in an array.
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+
+let numbers = [1, 2, 3, 4, 5];
+
+let index;
+
+for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] === 3) {
+        index = i;
+        break;
+    }
+}
+
+console.log(index);
+```
+
+Very straight forward program. But this is purely javascript. No type annotations. But this will work fine.
+
+I want you to hover over every index of the array if you are using vs code. 
+
+You should see every variable has it's type inferred by typescript.
+
+This is nice right? 
+
+Now let's start specifying the types of the variables ourselves.
+
+Fist let's specify the type of the `index` variable.
+
+Index clearly should be a number right?
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+
+let numbers = [1, 2, 3, 4, 5];
+
+let index: number;
+
+for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] === 3) {
+        index = i;
+        break;
+    }
+}
+
+console.log(index); // This will throw an error
+```
+
+What's happening there? In the last line where we are logging the `index` variable you should see that a error is thrown.
+
+Why is that? I told you before typescript is pretty smart. If you think about it did we ever set a value for the `index` variable?
+
+And what happends if we don't a value for the `index` variable?
+
+It'll stay undefined right?
+
+This is what's happening here. Typescript is inferring the type of the `index` variable based on the value that is assigned to it which is undefined at start and of you log inside the if statement inside the for loop there won't be any errors because we are setting a value inside the if statement. But outside it can still be undefined.
+
+So, the real type of the `index` variable is `number | undefined`.
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+
+let numbers = [1, 2, 3, 4, 5];
+
+let index: number | undefined;
+
+for (let i = 0; i < numbers.length; i++) {
+    if (numbers[i] === 3) {
+        index = i;
+        break;
+    }
+}
+
+console.log(index);
+```
+
+Another cool thing here is that. If you try to access the `index` variable methods that are available for the `number` type it will work fine but it'll automatically put a `?` after the variable name. This is called optional chaining. 
+
+So, that you don't get any errors if the `index` variable is undefined. Try to use a method of number type and you should see a optional chaining added automatically.
+
+Now, we can specify the type for the `i` variable of the `for loop`.
+
+```ts {.line-numbers}
+...
+
+for (let i: number = 0; i < numbers.length; i++) {
+    if (numbers[i] === 3) {
+        index = i;
+        break;
+    }
+}
+
+...
+
+```
+
+There is no chance that `i` variable will be undefined. So, we can specify the type as `number`.
+
+> Yes you can write vanilla js code and because of type inference most of the time there should be no errors.
+
+There's one last variable left.
+
+`numbers` is an array of numbers.
+
+First let's try an empty array without type annotations.
+
+```ts {.line-numbers}
+
+let array = [];
+
+```
+
+Now, hover over the `array` variable.  You'll see that it is of type `any[]`.
+
+> `[]` is a type annotation for an array. And if you want to say what type of array it is you can specify it by `typename[]`. 
+
+So, by default an empty array is treated as a array where any type of value can be assigned to it.
+
+So, now let's assugn a type for the array.
+
+```ts {.line-numbers}
+
+let array: number[] = [1,2,3,4];
+
+```
+
+This will turn the `array` variable into a array where only numbers can be assigned to it.
+
+Try to put something other than a number in the array and you will get an error.
+
+```ts {.line-numbers}
+
+let array: number[] = [1,2,3,4,'something else'];
+
+```
+
+It'll throw an error. You cannot do that. Now, what if you want to have an array where only strings and numbers can be assigned to it?
+
+```ts {.line-numbers}
+
+let array: (string | number)[] = [1,2,3,4,'something else'];
+
+```
+
+You can `|` to specify multiple types and after that add a `[]` to make it an array.
+
+Now, this will persist even when you use a array method like `push` you can see that anything other than a number or string will throw an error.
+
+Well, let's now add the type for `numbers` variable.
+
+```ts {.line-numbers}
+// 1_basics/src/annotations.ts
+
+let numbers: number[] = [1, 2, 3, 4, 5];
+
+let index: number | undefined;
+
+for (let i: number = 0; i < numbers.length; i++) {
+    if (numbers[i] === 3) {
+        index = i;
+        break;
+    }
+}
+
+console.log(index?.toFixed(2));
+```
+
+That's the basics type annotation in typescript. 
+
+# Final words
+
+This is kinda fun. Next article we will talk about objects and function typings.
