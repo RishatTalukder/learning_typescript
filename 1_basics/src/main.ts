@@ -5,6 +5,7 @@ import heroImg from './assets/hero.png'
 import { setupCounter } from './counter.ts'
 import './annotations.ts'
 import './objects.ts'
+import './functions.ts'
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 <section id="center">
